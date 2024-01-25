@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+  {% block content %}
+
+   <div class="col-4 offset-4">
+
+    <h1> Add a lab file </h1>
+       <br>
+     <form action= "{% url 'add_record' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form.as_p}}
+         <br>
+       <button type="submit" class="btn btn-primary">Submit</button>
+     </form>
+    </div>
+    {% endblock content %}

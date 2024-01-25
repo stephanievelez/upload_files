@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="col-4 offset-4"> <!--this makes the login page in the middle of the screen-->
+
+    {{form.upload.url}}
+    {% for file in files %}
+    <a href ="{{file.upload.url}}">{{file.upload}}</a>
+    {{file.name}}
+
+    {% endfor %}
+
+    {% endblock content %}
