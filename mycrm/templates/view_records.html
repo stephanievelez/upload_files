@@ -3,11 +3,12 @@
 {% block content %}
 <div class="col-4 offset-4"> <!--this makes the login page in the middle of the screen-->
 
-    {{form.upload.url}}
-    {% for file in files %}
-    <a href ="{{file.upload.url}}">{{file.upload}}</a>
-    {{file.name}}
+<h1> View Records </h1>
+    <select name="csv_file">
+        {% for choice in files %}
+            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+        {% endfor %}
+    </select>
 
-    {% endfor %}
 
     {% endblock content %}

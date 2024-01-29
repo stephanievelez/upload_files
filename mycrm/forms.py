@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from .models import NewFile
+from django.contrib.admin import widgets
 
 class SignUpForm(UserCreationForm):
     Name = forms.CharField(label='Name', widget=forms.TextInput(attrs={'class':'form-control'}))
@@ -19,14 +20,13 @@ class addRecord(forms.ModelForm):
         model = NewFile
         fields = ['name', 'upload', 'description']
         labels = {'Name of file': '', 'Select a file (max. 42 MB)': ''}
-        widgets = {'Description': forms.Textarea(attrs={'cols': 80})}
+        widgets = {'description': forms.Textarea(attrs={'cols': 80})}
 
+class searchRecord(forms.ModelForm):
+    class Meta:
+        model = NewFile
+        fields = "__all__"
 
-# class addRecord(forms.Form):
-#     title = forms.CharField(max_length=50)
-#     file = forms.FileField()
-#     class Meta:
-#         model = NewFile
-#         fields = ['title', 'upload']
-    #     #labels = {'Select a file (max. 42 MB)': '', 'Name of file': '', 'Description': ''}
-    #     widgets = {'description': forms.Textarea(attrs={'cols': 80})}
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].queryset = NewFile.objects.all()
