@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import SignUpForm, addRecord
-from . import handle_uploaded_file
-from .models import NewFile
+
+from django.contrib.admin import widgets
 
 
 # Create your views here.
@@ -71,10 +71,13 @@ def add_record(request):
     return render(request, 'add_record.html', {'form': form})
 
 def list_files(request):
-    if request.user.is_authenticated:
-    #if request.method != 'POST': the GET request gets data from the server, POST request sends data to the server
-        form = NewFile.objects.all()
+    csv_files = add_record(request)
+    if csv_files:
+        dropdown = widgets.Select(choices=[f.name for f in csv_files])
+        return render(request, 'view_records.html', {'files': dropdown})
+    else:
+        return None
 
-        return render(request, 'view_records.html', {'files': form})
+    return render(request, 'view_records.html')
 
 
