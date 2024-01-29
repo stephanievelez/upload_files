@@ -1,14 +1,62 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="col-4 offset-4"> <!--this makes the login page in the middle of the screen-->
+<!-- templates/upload_file.html -->
+<br>
+ <div class="col-4 offset-4">
+<select id="id_files">
+    {% for file in file_list %}
+        <option value="{{ file }}">{{ file }}</option>
+    {% endfor %}
+</select>
+     <br><br>
+<button type="button" id="submitBtn">Submit</button>
+</div>
 
-<h1> View Records </h1>
-    <select name="csv_file">
-        {% for choice in files %}
-            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
-        {% endfor %}
-    </select>
+<!--<form method="post" enctype="multipart/form-data" id="searchRecord" action="{% url 'view_records' %}">-->
+<!--    {% csrf_token %}-->
+<!--    {{ form }}-->
+<!--    <select id="id_files">-->
+<!--        {% for file in file_list %}-->
+<!--            <option value="{{ file }}">{{ file }}</option>-->
+<!--        {% endfor %}-->
+<!--    </select>-->
+<!--    <br><br>-->
+<!--    <button type="button" id="submitBtn">Submit</button>-->
+<!--</form>-->
 
 
-    {% endblock content %}
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#submitBtn").click(function () {
+            const url = "{% url 'view_records' %}";  // Use Django template tag to get URL
+            const fileId = $("#id_files").val();
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data: {
+                    'files': fileId
+                },
+                success: function (data) {
+                    // Handle the successful response here
+                    console.log('Response:', data);
+                    $("#searchRecord").submit();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    // Handle the error here
+                    console.error('Error:', textStatus, errorThrown);
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
+{% endblock content %}
+```
+

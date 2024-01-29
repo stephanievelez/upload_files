@@ -25,8 +25,9 @@ class addRecord(forms.ModelForm):
 class searchRecord(forms.ModelForm):
     class Meta:
         model = NewFile
-        fields = "__all__"
+        fields = ['name']
+        #fields = "__all__"
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['name'].queryset = NewFile.objects.all()
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.fields['name'].queryset = NewFile.objects.all()
