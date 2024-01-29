@@ -2,9 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import SignUpForm, addRecord
-
-from django.contrib.admin import widgets
-
+from .models import NewFile
+from django.http import JsonResponse
+from django.shortcuts import HttpResponse
 
 # Create your views here.
 #login function
@@ -70,14 +70,25 @@ def add_record(request):
 
     return render(request, 'add_record.html', {'form': form})
 
-def list_files(request):
-    csv_files = add_record(request)
-    if csv_files:
-        dropdown = widgets.Select(choices=[f.name for f in csv_files])
-        return render(request, 'view_records.html', {'files': dropdown})
-    else:
-        return None
+# views.py
 
-    return render(request, 'view_records.html')
+
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+def list_files(request):
+    files = NewFile.objects.values('name').distinct()
+    file_list = [file['name'] for file in files]
+    if is_ajax(request) and request.method == 'GET':
+        files = request.GET.get('files', None)
+        # Process the selected file and return appropriate data
+        # Example: cities = YourModel.objects.filter(upload=files).values('name')
+        # Return JsonResponse with the data
+        #return JsonResponse({'files': []})  # Replace with actual data
+
+
+    return render(request, 'view_records.html', {'file_list': file_list})
+
+
 
 
